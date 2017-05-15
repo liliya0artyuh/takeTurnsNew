@@ -19,7 +19,7 @@ module.exports = {
           process.env.MONGOHQ_URL ||
           process.env.OPENSHIFT_MONGODB_DB_URL +
           process.env.OPENSHIFT_APP_NAME ||
-          'mongodb://heroku_5d7j4gdf:heroku_5d7j4gdf@ds143241.mlab.com:43241/heroku_5d7j4gdf'
+          'mongodb://heroku_5d7j4gdf:takeTurns14@ds143241.mlab.com:43241/heroku_5d7j4gdf'
          //old deployment -  'mongodb://heroku_ggpdvnnq:75a091158mhgo99cc0rjia8ln8@ds011291.mlab.com:11291/heroku_ggpdvnnq'
   }
 };
