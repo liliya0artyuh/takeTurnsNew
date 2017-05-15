@@ -1,0 +1,165 @@
+<navbar></navbar>
+<header class="banner">
+    <div class="container">
+        <h3>Admin Portal</h3>
+        <!--<p class="lead">Edit, delete calendar information and/or member list from here.</p>-->
+    </div>
+</header>
+
+<div class="container outerBox" id="calBox">
+    <!-- form to display the calendar -->
+    <div id="calView" ng-show="$ctrl.editCal">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>{{$ctrl.calendar.name}}</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <span><label>{{"Created on:&nbsp"}}</label>{{$ctrl.convertDate($ctrl.calendar.dateCreated)}}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <span><label>{{"Description:&nbsp"}}</label>{{$ctrl.calendar.description}}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12">
+            <div class="links">
+                <span><label>{{"Admin Link:&nbsp"}}</label> <a href="{{$ctrl.user.link}}">{{$ctrl.user.link}}</a></span>
+            </div>
+            </div>
+            <div class="col-lg-12 col-sm-12">
+                <a href="/emailSender" target="_top">
+                    <button type="button" class="btn btn-primary" href='/emailSender' ng-click="$ctrl.shareAdminLink($ctrl.user.link)">Share Admin Link</button>
+                </a>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12">
+              <div class="links">
+                <span><label>{{"User Link:&nbsp"}}</label><a href="{{$ctrl.user.activeUserLink}}" target="_top">{{$ctrl.user.activeUserLink}}</a></span>
+                </div>
+            </div>
+            <div class="col-lg-12 col-sm-12">
+                <a href="/emailSender" target="_top">
+                    <button type="button" class="btn btn-primary" ng-click="$ctrl.shareUserLink($ctrl.user.activeUserLink)">Share User Link</button>
+                </a>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-lg-12">
+                <span><label>{{"Users:&nbsp"}}</label></span>
+                <ol>
+                    <li ng-repeat="mem in $ctrl.calendar.members | orderBy:'name'">
+                        {{ mem.name + " - "}} ( <span style="color:blue">{{mem.email}}</span> )
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="button" class="btn btn-primary" ng-click="$ctrl.editCalendar()">Edit Calendar</button>
+            </div>
+        </div>
+    </div>
+    <!-- form to display view the calendar END -->
+
+
+    <!-- form to edit and delete the calendar -->
+    <div id="calEdit" ng-hide="$ctrl.editCal">
+        <div id="beforeDelete" ng-show="$ctrl.deleteFalse">
+            <form name="newCal" class="calendar-form" role="form">
+                <div class="row">
+
+                    <div class="col-lg-9 col-md-9 col-sm-9">
+                        <h2>{{"Update calendar details below:"}}</h2>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-danger" ng-click="$ctrl.deleteCalendar()">Delete Calendar</button>
+                        </span>
+                    </div>
+                </div>
+                <fieldset class="form-group">
+                    <label  class="sr-only"  for="inputEmail">{{"Email address"}}</label>
+                    <input name="email" type="email" class="form-control" id="inputEmail" placeholder="{{$ctrl.adminEmail}}" ng-model="$ctrl.adminEmail" required>
+                    <small class="invalidInput" ng-show="newCal.email.$touched&&newCal.email.$invalid">*Email is required.</small>
+                </fieldset>
+                <fieldset class="form-group">
+                    <label  class="sr-only"  for="inputName">{{"Name"}}</label>
+                    <input name="name" type="text" class="form-control" id="inputName" placeholder="{{$ctrl.calName}}" ng-model="$ctrl.calName" required>
+                    <small class="invalidInput" ng-show="newCal.name.$touched&&newCal.name.$invalid">*Name is required.</small>
+                </fieldset>
+                <fieldset class="form-group">
+                    <label  class="sr-only"  for="inputDescription">{{"Description"}}</label>
+                    <textarea class="form-control" id="inputDescription" rows="3" placeholder="{{$ctrl.calDescription}}" ng-model="$ctrl.calDescription"></textarea>
+                </fieldset>
+
+                <!-- scrollable view of current memebrs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="page-header">{{"Current Users:"}}</label> {{$ctrl.memCounter}}
+                        <div class="scroll">
+                            <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="member in $ctrl.membersTemp| orderBy:'name'">
+                                <li>{{member.name}} ( <span style="color:blue">{{member.email}}</span> )
+                                    <button type="button"
+                                    class="close" ng-click="$ctrl.deleteMember(member)">&times;</button>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- collapsable box for members -->
+                <p>
+                <button   type="button"  href="#" class="btn btn-info" ng-model="$ctrl.memberBox" ng-click="$ctrl.changeCollapseBtn()">{{$ctrl.collapseText}}
+                    <span class="caret" id="collapseCaret"></span>
+                </button>
+                </p>
+                <div ng-show="$ctrl.memberBox" id="memberBox">
+                    <form name="memberForm"  class="member-form" role="form">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label class="sr-only" for="memberName">{{"Name"}}</label>
+                                    <input type="text" class="form-control" id="memberName" placeholder="Name of member" ng-model="$ctrl.memberName">
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="form-group">
+                                    <label class="sr-only" for="memberEmail">{{"Email*"}}</label>
+                                    <input type="email" name="emailMember" class="form-control" id="memberEmail" placeholder="Email address" ng-model="$ctrl.memberEmail" required>
+                                    <small class="invalidInput" ng-show="newCal.emailMember.$touched&&newCal.emailMember.$invalid">*Email is required.</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-primary" ng-click="$ctrl.addMember()">Add User</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+                <!-- buttons -->
+                <button type="submit" class="btn btn-primary" ng-click="$ctrl.updateCalendar()">Update Calendar</button>
+                <button type="button" class="btn btn-warning" ng-click="$ctrl.cancelUpdate()">Cancel</button>
+            </form>
+        </div>
+        <!-- form to edit and delete the calendar END -->
+
+        <!-- form to edit and delete the calendar END -->
+        <div id="afterDelete" ng-hide="$ctrl.deleteFalse">
+            <pre><h4>{{$ctrl.message}}</h4></pre>
+        </div>
+        <!-- form to edit and delete the calendar END -->
+
+    </div>
+</div>

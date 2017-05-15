@@ -1,0 +1,28 @@
+.email-form {
+  margin: 20px 0;
+}
+
+
+#waitScreenBox{
+  border: solid 1px black;
+  margin-top: 10px;
+  padding-bottom: 10px;
+}
+
+#memberBox{
+  padding: 10px;
+  border: solid 1px grey;
+}
+
+#selectEmailsBox {
+	position: absolute;
+	background-color: white;
+	padding: 5px;
+	overflow-y:scroll;
+	border: solid grey 1px;
+	max-width: 400px;
+	min-height: 100px;
+	max-height: 400px;
+	z-index: 10;
+	margin-right: 15px;
+}

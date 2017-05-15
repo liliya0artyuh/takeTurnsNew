@@ -1,0 +1,170 @@
+<navbar></navbar>
+<header class="banner">
+
+    <div class="container">
+        <h3>Email</h3>
+    </div>
+</header>
+
+<div class="container outerBox">
+
+        <div id="mainBox">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Send E-mail</h2>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-12">
+        <!-- main form ----------------------- -->
+            <!-- Build mailing list - -->
+                <button type="button" class="btn btn-sm btn-info" ng-click="$ctrl.openSelectEmails()">
+                        {{"Select Members "}}<span class="caret"></span>
+                </button>
+            </div>
+        </div>
+        <!-- box for emails to be selected  -->
+        <div id="selectEmailsBox" ng-show="$ctrl.selectEmailsBox" >
+        <form id="selectMembersE" name="selectMembersE" role="form">
+            <fieldset class="form-group">
+                <div class="row">
+                <div class="col-lg-11 col-md-11 col-sm-11">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-lg btn-primary" ng-click="$ctrl.submitSelected()">{{" Submit Selected"}} <b>{{$ctrl.numberOfSelected}}</b></button>
+                    </span>
+                </div>
+                
+                </div>
+                                <!-- select all users to send email to -->
+                <div class="row">
+                    <div class="col-lg-6 col-sm-6 lbl">
+                        <button type="button"  class="btn btn-info" ng-click="$ctrl.selectAllEmails()" id="isAllMembers"> <span class="glyphicon glyphicon-ok"></span>
+                                {{"All Members"}}</button>
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-sm-5">
+                        <button type="button" class="btn btn-danger" ng-click="$ctrl.resetSelected()"><span class="glyphicon glyphicon-remove"></span>{{" Cancel Selected"}}</button>
+                </div>
+                </div>
+                <!-- select all users to send email to -->
+                <!-- adding new email to the mailing list -->
+                  <div class="row">
+                    <div class="col-lg-11 col-sm-11">
+                        <div id="newEmailBox">
+                            <form name="memberForm"  class="member-form" role="form">
+                                <div class="row">
+                                    <div class="col-lg-7 col-md-7  col-sm-11">
+                                        <div class="form-group">
+                                            <input type="email" name="emailRecipient" class="form-control" id="recipientEmail" placeholder="New Email" ng-model="$ctrl.newRecipientEmail" ><small class="invalidInput" ng-show="memberForm.$submitted ||  memberForm.emailRecipient.$touched&&memberForm.emailRecipient.$invalid">*Email is required.</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 col-sm-11">
+                                        <button type="button" class="btn btn-success" ng-click="$ctrl.addRecipient()">Add New Email</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- adding new email to the mailing list -->
+                <!-- search exisiting users -->
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                        <p><span class="glyphicon glyphicon-search"></span><input ng-model="searchText" placeholder="Search" class="form-control"></p>
+                    </div>
+                </div>
+                 <!-- collapsable box for adding select members only -->
+                <div id="listOfEmailsToSelect">
+                    <div class="row">
+                        <div class="col-lg-11">
+                            <div>
+                                <ul class="nav nav-tabs nav-stacked col-sm-11" ng-repeat="member in $ctrl.allMembers| orderBy:'name' | filter:searchText">
+                                    <li>
+                                        <input type="checkbox" name="{{member.email}}" id="{{member.email}}" value="{{member.email}}" ng-click="$ctrl.addEmail(member.email)" />{{'  ' + member.name }} ({{member.email}})
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            </form>
+            </div>
+                <!-- search exisiting users -->
+        <!-- box for emails to be selected  -->
+
+                <!-- UNselect all users to send email to -->
+                <div class="row">
+                    <div class="col-lg-11 col-sm-11 lbl">
+                        <button type="button" class="btn btn-sm btn-danger" ng-click="$ctrl.resetSendToAll()" id="isAllMembers"> <span class="glyphicon glyphicon-remove"></span>
+                                {{"Cancel All"}}</button>
+                    </div>
+                </div>
+                <!-- UNselect all users to send email to -->
+            <form id="sendEmailForm" role="form">
+                    <fieldset class="form-group">
+                    <!-- To view -->
+                        <div class="col-lg-12 col-sm-12 lbl">
+                            <div>
+                                <div class="row">
+                                    <div class="col-lg-11">
+                                        <b>{{"Mailing List:"}}{{$ctrl.sendMembers.length}}</b> 
+                                         </div>
+                                          <div class="col-lg-11">
+                                        <div class="scroll">
+                                            <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="member in $ctrl.sendMembers | orderBy: desc">
+                                                <li><span style="color:blue">{{member}}</span>
+                                                <button type="button" class="close" ng-click="$ctrl.deleteMember(member)">&times;</button>
+                                                </li>
+                                             </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                         </div>
+                    </fieldset>
+            <!-- Build mailing list - -->
+
+            <!-- subject -------------- -->
+            <fieldset class="form-group">
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 lbl">
+                        <label class="sr-only"  for="subject">{{"Subject: "}}</label>
+                    </div>
+                    <div class="col-lg-12 col-sm-12">
+                        <input id="subject" name="subject" type="text" class="form-control" ng-model="$ctrl.subject" placeholder="Subject" required />
+                        <small class="invalidInput" ng-show="sendEmail.subject.$touched&&sendEmail.subject.$invalid">*SUBJECT is required.</small>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- subject ---------------->
+
+            <!-- body ---------------->
+            <fieldset class="form-group">
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 lbl">
+                        <label class="sr-only"  for="emailBody">{{"Body: "}}</label>
+                    </div>
+                    <div class="col-lg-12 col-sm-12">
+                        <textarea id="emailBody" class="form-control" ng-model="$ctrl.emailBody" name="emailBody" cols="60" rows="7" placeholder="Email body" required></textarea>
+                        <small class="invalidInput" ng-show="sendEmail.emailBody.$touched&&sendEmail.emailBody.$invalid">*BODY is required.</small>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- body ---------------->
+
+            <!-- send button ---------------->
+            <fieldset class="form-group">
+                <div class="row">
+                    <div class="col-lg-1 col-sm-12">
+                        <button id="send_email" type="submit" class="btn btn-primary" ng-click="$ctrl.sendEmail()" ng-disabled="sendemail.$invalid">SEND</button>
+                        <span id="message">{{$ctrl.message}}</span>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- send button ---------------->
+
+        </form>
+    </div>
+</div>

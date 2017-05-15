@@ -1,0 +1,188 @@
+<navbar></navbar>
+
+<header class="banner">
+    <div class="container">
+        <h3>View Events</h3>
+    </div>
+</header>
+
+<div class="container outerBox">
+<div>
+
+<!-- search particular event-->
+ <div class="col-lg-3 col-sm-9">
+<span class="glyphicon glyphicon-search"></span>{{"&nbsp"}}<input placeholder="Search" ng-model="$ctrl.searchText">
+ </div><div class="col-lg-9 col-sm-3">
+    <button type="button" class="btn btn-info" ng-click="$ctrl.showAllEvents()">SHOW ALL</button> 
+    </div>
+<br />
+<br />
+<!-- search particular event-->
+
+   <script type="text/ng-template" id="group-template.html">
+    <div class="panel {{panelClass || 'panel-default'}}">
+      <div class="panel-heading">
+        <h4 class="panel-title" style="color:#fa39c3">
+          <a href tabindex="0" class="accordion-toggle"  ng-click="toggleOpen()" uib-accordion-transclude="heading"><span
+            ng-class="{'text-muted': isDisabled}">{{heading}}</span></a>
+        </h4>
+      </div>
+      <div class="panel-collapse collapse" uib-collapse="!isOpen">
+        <div class="panel-body" style="text-align: right" ng-transclude></div>
+      </div>
+    </div>
+  </script>
+          <!--  
+                <ul class="nav nav-tabs nav-stacked col-md-12 col-lg-12 col-sm-12" ng-repeat="event in $ctrl.calendar.events | orderBy: 'date'">
+          <li ng-click="$ctrl.showDetails(event)"><a>{{$ctrl.convertDate(event.date) + ' - ' + event.host}}<button type="button" class="close" ng-click="$ctrl.deleteEvent(event)">&times;</button></a></li>
+              </ul>
+          -->
+</div>
+
+ <div class="col-lg-12 col-sm-12">
+     <a href="/event" target="_top"><button type="button" class="btn btn-success">NEW EVENT</button></a>
+ </div>
+
+ <div class="col-lg-12 col-sm-12">
+<uib-accordion close-others="false">
+    <uib-accordion-group heading="{{$ctrl.convertDate(event.date) + ' - ' + event.title + ' - ' + event.host}}" ng-repeat="event in $ctrl.calendar.events | orderBy: 'date' | filter:$ctrl.searchText">
+    <button type="button" class="btn btn-danger" ng-click="$ctrl.deleteEvent(event)">DELETE</button>
+    <a href="/event" target="_top"><button type="button" class="btn btn-warning" ng-click="$ctrl.editEvent(event)">EDIT</button></a>
+    <a href="/event" target="_top"><button type="button" class="btn btn-warning" ng-click="$ctrl.copyEvent(event)">COPY</button></a> 
+        <div>
+            <label>{{"Title: "}}</label> {{event.title}}
+        </div>
+        <!--
+        <div>
+            <label>{{"Date: "}}</label> {{event.date | date: 'dd/MM/yyyy'}}
+        </div>
+        -->
+        <div>
+            <label>{{"Start Time: "}}</label> {{event.startTime | date: 'hh:mm a'}}
+        </div>
+        <div>
+            <label>{{"End Time: "}}</label> {{event.endTime | date: 'hh:mm a'}}
+        </div>
+        <!--
+        <div>
+             <label>{{"Host: "}}</label> {{event.host}}
+        </div>
+        -->
+        <div>
+            <label>{{"Description: "}}</label> {{event.info}}
+        </div>
+        <div>
+        <a href="/emailSender" target="_top">
+       <button type="submit" class="btn btn-primary" ng-click="$ctrl.sendInvitation(event)">Invite Guests</button>
+    </a>
+    </uib-accordion-group>
+  </uib-accordion>
+</div>
+<!--Event Details-->
+<!--
+    <div id="detailsView" class="row">
+        <div id="evenDet" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <!--Event Detail View section-->
+           <!-- <section ng-show="$ctrl.showEventDetailView">
+                <h3>{{$ctrl.convertDate($ctrl.selectedEvent.date) + ' - ' + $ctrl.selectedEvent.host}}</h3>
+                <div>
+                    <label>Title: </label>{{$ctrl.selectedEvent.title}}
+                </div>
+                <div>
+                    <label>Date: </label> {{$ctrl.selectedEvent.date | date: 'dd/MM/yyyy'}}
+                </div>
+                <div>
+                    <label>Start Time: </label> {{$ctrl.selectedEvent.startTime | date: 'hh:mm a'}}
+                </div>
+                <div>
+                    <label>End Time: </label> {{$ctrl.selectedEvent.endTime | date: 'hh:mm a'}}
+                </div>
+                <div>
+                    <label>Host: </label> {{$ctrl.selectedEvent.host}}
+                </div>
+                <div>
+                    <label>Description:</label> {{$ctrl.selectedEvent.info}}
+                </div>
+                <div>
+                    <button class="btn btn-primary" ng-click="$ctrl.hideEventView(0)">EDIT</button>
+                </div>
+            </section>
+-->
+            <!--This section is the Form to edit the event details-->
+            <!--
+            <section id="edEvntView" ng-hide="$ctrl.showEventDetailForm">
+                <form name="newCal" class="calendar-form" role="form">
+                    <h1>{{eventViewer.calendar.name}}</h1>
+                    <br>
+                    <div class="col-md col-md-offset-11">
+                        <button class="btn btn-primary" ng-click="$ctrl.deleteEvent(1)">DELETE</button>
+                    </div>
+                    <fieldset class="form-group">
+                        <label>Title: </label>
+                        <input name = "title" class="form-control" ng-model="$ctrl.selectedEvent.title" required>
+                        <small class="invalidInput" ng-show="$ctrl.title.$touched&&newCal.title.$invalid">*Event Title is required.</small>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label>Date: </label>
+                        <input name = "eventDate" type="date" class="form-control" ng-model="$ctrl.eventDate" required>
+                        <small class="invalidInput" ng-show="$ctrl.eventDate.$touched&&newCal.eventDate.$invalid">*Date is required.</small>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label>Start Time: </label>
+                        <input name = "eventStartTime" type="time" class="form-control" ng-model="$ctrl.eventStartTime" required>
+                        <small class="invalidInput" ng-show="$ctrl.eventStartTime.$touched&&$ctrl.eventStartTime.$invalid">*Start Time is required.</small>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label>End Time: </label>
+                        <input name = "eventEndTime" type="time" class="form-control" ng-model="$ctrl.eventEndTime" required>
+                        <small class="invalidInput" ng-show="$ctrl.eventEndTime.$touched&&$ctrl.eventEndTime.$invalid">*End Time is required.</small>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label>Host: </label>
+                        <input name = "host" class="form-control" ng-model="$ctrl.selectedEvent.host" required>
+                        <small class="invalidInput" ng-show="$ctrl.host.$touched&&$ctrl.host.$invalid">*Host is required.</small>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label>Description: </label>
+                        <textarea class="form-control" ng-model="$ctrl.selectedEvent.info" id="" cols="30" rows="10"></textarea>
+                    </fieldset>
+                    <br>
+                    <div ng-init="updBttn=true">
+                        <button class="btn btn-primary" ng-click="$ctrl.updateEvent(1)">UPDATE</button>
+                        <button class="btn btn-primary" ng-click="$ctrl.cancelEdit(1)">CANCEL</button>
+                    </div>
+                </form>
+            </section>
+            <!--end of column for event details view -->
+
+
+
+
+<!--
+    <div class="col-lg-12">
+        <h2>Send E-mail</h2>
+
+        <form name="sendemail" class="email-form" role="form" novalidate>
+
+            <fieldset class="form-group">
+                <label for="">TO:</label>
+                <input name="email" id="to" type="text" class="form-control" ng-model="$ctrl.to" placeholder="Enter e-mail recpients" required/>
+            </fieldset>
+            <fieldset class="form-group">
+                <label for="">SUBJECT:</label>
+                <input id="subject" type="text" class="form-control" ng-model="$ctrl.subject" placeholder="Subject" />
+            </fieldset>
+            <fieldset class="form-group">
+                <label for="">BODY:</label>
+                <textarea id="emailBody" class="form-control" ng-model="$ctrl.emailBody" name="" cols="60" rows="7" placeholder="Email body"></textarea>
+            </fieldset>
+            <fieldset class="form-group">
+                <button id="send_email" type="submit" class="btn btn-primary" ng-click="$ctrl.sendEmail()" ng-disabled="sendemail.$invalid">SEND</button>
+                <span id="message">{{$ctrl.message}}</span>
+            </fieldset>
+        </form>
+    </div>
+    -->
+
+</div>
+

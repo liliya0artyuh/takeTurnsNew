@@ -1,0 +1,18 @@
+<div >
+        <div class="modal-header">
+            <h3 class="modal-title">{{titleModal}}</h3>
+        </div>
+        <div class="modal-body" ng-show="isArrayModal">
+            <ol>
+                <li ng-repeat="item in arrayModal">
+                    <p>{{ item }}</p>
+                </li>
+            </ol>
+        </div>
+        <div class="modal-body" ng-hide="isArrayModal">
+            <p>{{textModal}}<p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        </div>
+</div>

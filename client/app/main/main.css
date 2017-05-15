@@ -1,0 +1,17 @@
+
+.calendar-form {
+  margin: 20px 0;
+}
+
+#memberBox{
+  padding: 10px;
+  border: solid 1px grey;
+}
+
+div.scroll {
+    width: 100%;
+    height: 100px;
+    overflow: scroll;
+}
+
+
