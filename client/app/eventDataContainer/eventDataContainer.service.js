@@ -10,7 +10,6 @@ angular.module('takeTurnsApp')
       var eventDescription = "";
       var eventId = "";
       var buttonName = "CREATE EVENT";
-      $cookies.put("buttonName", "CREATE EVENT");
 
 return {
       setStartTime: function(data) {
